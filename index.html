@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explainable Sentiment Analysis (XSA)</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Explainable Sentiment Analysis</h1>
+            <p class="subtitle">Bridging the Gap Between Performance and Transparency</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Input Section -->
+            <div class="input-section">
+                <h2>Analyze Text</h2>
+                <textarea id="textInput" placeholder="Enter text to analyze sentiment..."></textarea>
+                <div class="controls">
+                    <div class="control-group">
+                        <label for="methodSelect">Explanation Method:</label>
+                        <select id="methodSelect">
+                            <option value="ig">Integrated Gradients (IG)</option>
+                            <option value="shap">SHAP-like</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label>
+                            <input type="checkbox" id="includeCounterfactuals" checked>
+                            Include Counterfactuals
+                        </label>
+                    </div>
+                    <button id="analyzeBtn" class="btn-primary">Analyze</button>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="resultsSection" class="results-section" style="display: none;">
+                <!-- Prediction -->
+                <div class="prediction-card">
+                    <h2>Prediction</h2>
+                    <div class="prediction-content">
+                        <div class="label-badge" id="labelBadge"></div>
+                        <div class="confidence-bar-container">
+                            <label>Confidence:</label>
+                            <div class="confidence-bar">
+                                <div class="confidence-fill" id="confidenceFill"></div>
+                            </div>
+                            <span id="confidenceValue"></span>
+                        </div>
+                        <div class="quality-badge" id="qualityBadge"></div>
+                    </div>
+                </div>
+
+                <!-- Rationale -->
+                <div class="rationale-card">
+                    <h2>Rationale</h2>
+                    <p id="rationaleText"></p>
+                </div>
+
+                <!-- Token Attributions -->
+                <div class="attributions-card">
+                    <h2>Token-Level Attributions</h2>
+                    <div class="explanation-depth">
+                        <label for="depthSlider">Explanation Depth:</label>
+                        <input type="range" id="depthSlider" min="0" max="100" value="50">
+                        <span id="depthValue">50%</span>
+                    </div>
+                    <div id="textWithHighlights" class="highlighted-text"></div>
+                    <div class="attribution-legend">
+                        <span class="legend-item">
+                            <span class="legend-color positive"></span>
+                            Positive Contribution
+                        </span>
+                        <span class="legend-item">
+                            <span class="legend-color negative"></span>
+                            Negative Contribution
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Counterfactuals -->
+                <div id="counterfactualsCard" class="counterfactuals-card" style="display: none;">
+                    <h2>Counterfactual Examples</h2>
+                    <p class="info-text">Minimal edits that would change the sentiment:</p>
+                    <div id="counterfactualsList"></div>
+                </div>
+
+                <!-- Feedback Section -->
+                <div class="feedback-card">
+                    <h2>Feedback</h2>
+                    <p class="info-text">Help us improve by providing feedback:</p>
+                    <div class="feedback-buttons">
+                        <button class="btn-feedback" data-type="correct">✓ Correct</button>
+                        <button class="btn-feedback" data-type="incorrect">✗ Incorrect</button>
+                        <button class="btn-feedback" data-type="explanation_helpful">Helpful</button>
+                        <button class="btn-feedback" data-type="explanation_confusing">Confusing</button>
+                    </div>
+                    <textarea id="feedbackComments" placeholder="Additional comments..."></textarea>
+                    <button id="submitFeedback" class="btn-secondary">Submit Feedback</button>
+                </div>
+
+                <!-- Export Section -->
+                <div class="export-section">
+                    <button id="exportBtn" class="btn-secondary">Download Results (JSON)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
+
